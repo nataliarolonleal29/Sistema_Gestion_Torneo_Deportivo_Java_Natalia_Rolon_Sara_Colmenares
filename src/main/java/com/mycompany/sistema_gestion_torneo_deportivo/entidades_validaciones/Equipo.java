@@ -30,11 +30,11 @@ public class Equipo {
         if(jugador == null){
             throw new IllegalArgumentException("No se puede agregar un jugador nulo");
         }
-        this.jugadores = add(jugador);
+        this.jugadores.add(jugador);
     }
     
     public void registrar(Jugador jugador){
-        agregarJugador(jugador);
+            agregarJugador(jugador);
     }
     
     public void registrar(Entrenador entrenador){

@@ -28,9 +28,82 @@ public class Partido {
         this.equipoVisitante = equipoVisitante;
         setFecha(fecha);
         this.golesLocal = 0;
-        this.equipoVisitante = 0;
+        this.golesVisitante = 0;
         this.jugado = false;
     }
+    
+    public void registrarResultado(int golesLocal, int golesVisitante){
+        setGolesLocal(golesLocal);
+        setGolesVisitante(golesVisitante);
+        this.jugado =  true;
+    }
+
+    public Equipo getEquipoLocal() {
+        return equipoLocal;
+    }
+    
+    public Equipo getEquipoVisitante() {
+        return equipoVisitante;
+    }
+    
+    public int getGolesLocal() {
+        return golesLocal;
+    }
+    
+    public void setGolesLocal(int golesLocal) {
+        if(golesLocal < 0){
+            throw new IllegalArgumentException("Los goles del equipo local no pueden ser negativos");
+        }
+        this.golesLocal = golesLocal;
+    }
+    
+    public int getGolesVisitante() {
+        return golesVisitante;
+    }
+    
+    public void setGolesVisitante(int golesVisitante) {
+        if(golesVisitante < 0){
+            throw new IllegalArgumentException("Los goles del equipo visitante no pueden ser negativos");
+
+        }
+        this.golesVisitante = golesVisitante;
+    }    
+
+    public void setEquipoLocal(Equipo equipoLocal) {
+        this.equipoLocal = equipoLocal;
+    }
+
+    public void setEquipoVisitante(Equipo equipoVisitante) {
+        this.equipoVisitante = equipoVisitante;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        if(fecha == null || fecha.trim().isEmpty()){
+            throw new IllegalArgumentException("La fecha no puede estar vacía");
+        }
+        this.fecha = fecha.trim();
+    }
+
+    public boolean isJugado() {
+        return jugado;
+    }
+
+    public void setJugado(boolean jugado) {
+        this.jugado = jugado;
+    }
+    
+    @Override
+    public String toString(){
+        String estado = jugado ? golesLocal + " - " + golesVisitante : "Pendiente";
+        return equipoLocal.getNombre() + " vs " + equipoVisitante.getNombre() + " (" + fecha + " ) -> " + estado;
+    }
+    
+    
+    
     
     
     
