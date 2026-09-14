@@ -48,10 +48,10 @@ public class Torneo {
     public Equipo buscarEquipo(String nombreEquipo) {
     for (Equipo e : equipos) {
         if (e.getNombre().equalsIgnoreCase(nombreEquipo.trim())) {
-            return e; // Encontrado
+            return e;
         }
     }
-    return null; // No existe
+    return null;
     }
     public void agregarEquipo(Equipo equipo) {
     if (equipo == null) {
