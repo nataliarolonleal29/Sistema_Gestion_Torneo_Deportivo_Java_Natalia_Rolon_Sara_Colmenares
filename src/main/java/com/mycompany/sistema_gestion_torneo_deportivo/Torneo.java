@@ -103,9 +103,9 @@ public class Torneo {
                 }
             }
         }
-        return null;
-        
-        public static class EstadisticaEquipo implements Comparable<EstadisticaEquipo> {
+        return null;        
+    }
+    public static class EstadisticaEquipo implements Comparable<EstadisticaEquipo> {
         public Equipo equipo;
         public int partidosJugados;
         public int partidosGanados;
@@ -130,16 +130,13 @@ public class Torneo {
         }
     }
 
-    // 6. Método para calcular y ordenar la tabla de posiciones
     public List<EstadisticaEquipo> calcularTablaPosiciones() {
         List<EstadisticaEquipo> tabla = new ArrayList<>();
-        
-        // Inicializar estadísticas para cada equipo registrado
+
         for (Equipo e : equipos) {
             tabla.add(new EstadisticaEquipo(e));
         }
 
-        // Recorrer los partidos para procesar solo los que ya se jugaron
         for (Partido p : partidos) {
             if (p.isJugado()) {
                 EstadisticaEquipo estLocal = null;
@@ -178,16 +175,11 @@ public class Torneo {
             }
         }
 
-        
         for (EstadisticaEquipo est : tabla) {
             est.diferenciaGoles = est.golesFavor - est.golesContra;
         }
-
-        
         Collections.sort(tabla);
         return tabla;
-    
-        
     }
-    
+      
 }
