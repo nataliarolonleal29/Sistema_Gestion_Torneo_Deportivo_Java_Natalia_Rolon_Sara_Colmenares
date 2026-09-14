@@ -5,9 +5,11 @@
 package com.mycompany.sistema_gestion_torneo_deportivo;
 
 import com.mycompany.sistema_gestion_torneo_deportivo.entidades_validaciones.Equipo;
+import com.mycompany.sistema_gestion_torneo_deportivo.entidades_validaciones.Jugador;
 import com.mycompany.sistema_gestion_torneo_deportivo.entidades_validaciones.Partido;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -88,6 +90,104 @@ public class Torneo {
         sb.append("=========================================");
         return sb.toString();
 
+    }
+    public Jugador buscarJugadorPorNombre(String nombreJugador) {
+        if (nombreJugador == null || nombreJugador.trim().isEmpty()) {
+            return null;
+        }
+        
+        for (Equipo e : equipos) {
+            for (Jugador j : e.getJugadores()) {
+                if (j.getNombre().equalsIgnoreCase(nombreJugador.trim())) {
+                    return j; 
+                }
+            }
+        }
+        return null;
+        
+        public static class EstadisticaEquipo implements Comparable<EstadisticaEquipo> {
+        public Equipo equipo;
+        public int partidosJugados;
+        public int partidosGanados;
+        public int partidosEmpatados;
+        public int partidosPerdidos;
+        public int golesFavor;
+        public int golesContra;
+        public int diferenciaGoles;
+        public int puntos;
+
+        public EstadisticaEquipo(Equipo equipo) {
+            this.equipo = equipo;
+        }
+
+        @Override
+        public int compareTo(EstadisticaEquipo otro) {
+            // Ordenar de mayor a menor por puntos; si hay empate, por diferencia de goles
+            if (this.puntos != otro.puntos) {
+                return Integer.compare(otro.puntos, this.puntos);
+            }
+            return Integer.compare(otro.diferenciaGoles, this.diferenciaGoles);
+        }
+    }
+
+    // 6. Método para calcular y ordenar la tabla de posiciones
+    public List<EstadisticaEquipo> calcularTablaPosiciones() {
+        List<EstadisticaEquipo> tabla = new ArrayList<>();
+        
+        // Inicializar estadísticas para cada equipo registrado
+        for (Equipo e : equipos) {
+            tabla.add(new EstadisticaEquipo(e));
+        }
+
+        // Recorrer los partidos para procesar solo los que ya se jugaron
+        for (Partido p : partidos) {
+            if (p.isJugado()) {
+                EstadisticaEquipo estLocal = null;
+                EstadisticaEquipo estVisitante = null;
+
+                for (EstadisticaEquipo est : tabla) {
+                    if (est.equipo == p.getEquipoLocal()) estLocal = est;
+                    if (est.equipo == p.getEquipoVisitante()) estVisitante = est;
+                }
+
+                if (estLocal != null && estVisitante != null) {
+                    estLocal.partidosJugados++;
+                    estVisitante.partidosJugados++;
+
+                    estLocal.golesFavor += p.getGolesLocal();
+                    estLocal.golesContra += p.getGolesVisitante();
+                    estVisitante.golesFavor += p.getGolesVisitante();
+                    estVisitante.golesContra += p.getGolesLocal();
+
+                    // Asignación de puntos (3 por ganar, 1 por empatar, 0 por perder)
+                    if (p.getGolesLocal() > p.getGolesVisitante()) {
+                        estLocal.partidosGanados++;
+                        estLocal.puntos += 3;
+                        estVisitante.partidosPerdidos++;
+                    } else if (p.getGolesLocal() < p.getGolesVisitante()) {
+                        estVisitante.partidosGanados++;
+                        estVisitante.puntos += 3;
+                        estLocal.partidosPerdidos++;
+                    } else {
+                        estLocal.partidosEmpatados++;
+                        estLocal.puntos += 1;
+                        estVisitante.partidosEmpatados++;
+                        estVisitante.puntos += 1;
+                    }
+                }
+            }
+        }
+
+        
+        for (EstadisticaEquipo est : tabla) {
+            est.diferenciaGoles = est.golesFavor - est.golesContra;
+        }
+
+        
+        Collections.sort(tabla);
+        return tabla;
+    
+        
     }
     
 }
