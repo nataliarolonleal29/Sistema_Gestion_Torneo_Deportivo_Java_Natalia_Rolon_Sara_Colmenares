@@ -37,9 +37,7 @@ Este sistema es una aplicación de consola desarrollada en **Java** bajo el para
 
 ## Diagrama de Clases
 
-*(Aquí puedes insertar la imagen de tu diagrama de clases exportado desde tu herramienta de diseño)*
-
-
+![alt text](image.png)
 
 ---
 
